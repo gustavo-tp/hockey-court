@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Quadra de Hóquei</title>
+</head>
+<body>
+	<canvas id="canvas" width="800" height="600"></canvas>
+	<script type="text/javascript">
+		const canvas = document.getElementById("canvas");
+		const ctx = canvas.getContext("2d");
+
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+		let scale = 11;
+		let width = 61 * scale;		
+		let height = 30 * scale;
+		let borderRadius = 8.5 * scale;
+		let fundWidth = 4 * scale;
+		let halfHeight = height / 2;
+		let halfWidth = width / 2;
+		let fundArcRadius = 1.83 * scale;
+		let faceOffArcRadius = 4.57 * scale;
+		let faceOffCenter = {
+			x: fundWidth + 6.7 * scale,
+			y: 4 * scale + faceOffArcRadius
+		};
+		let pointRadius = 0.3 * scale;
+		let centralTopArcRadius = 2.8 * scale;
+		let centralArcRadius = 4 * scale;
+		let atkDfsWidth = (width - 2 * fundWidth) / 3;
+		let halfFaceOffArcRadius = faceOffArcRadius / 2;
+		let baseGoalLine = borderRadius - Math.sqrt(borderRadius ** 2 - (borderRadius - fundWidth) ** 2);
+
+		ctx.translate(canvas.width / 2 - halfWidth, canvas.height / 2 - halfHeight - 30);
+
+		// Contorno
+		ctx.beginPath();
+		ctx.strokeStyle = "black";
+		ctx.moveTo(borderRadius, 0);
+		ctx.lineTo(width - borderRadius, 0);
+		ctx.arc(width - borderRadius, borderRadius, borderRadius, -0.5 * Math.PI, 0);
+		ctx.lineTo(width, height - borderRadius);
+		ctx.arc(width - borderRadius, height - borderRadius, borderRadius, 0, 0.5 * Math.PI);
+		ctx.lineTo(borderRadius, height);
+		ctx.arc(borderRadius, height - borderRadius, borderRadius, 0.5 * Math.PI, Math.PI);
+		ctx.lineTo(0, borderRadius);
+		ctx.arc(borderRadius, borderRadius, borderRadius, Math.PI, 1.5 * Math.PI);
+		ctx.stroke();
+
+		// Linhas vermelhas		
+		ctx.strokeStyle = "red";
+
+		// Preenchimento azul linhas gol
+		ctx.fillStyle = "#AEC8E8";	
+
+		ctx.beginPath();		
+		ctx.arc(fundWidth, halfHeight, fundArcRadius, Math.PI / 2 * -1, Math.PI / 2);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(width - fundWidth, halfHeight, fundArcRadius, Math.PI / 2, Math.PI + Math.PI / 2);
+		ctx.fill();
+		ctx.stroke();
+
+		// Linha gol 1
+		ctx.beginPath();
+		ctx.moveTo(fundWidth, baseGoalLine);
+		ctx.lineTo(fundWidth, height - baseGoalLine);
+
+		// Linha gol 2
+		ctx.moveTo((width - fundWidth), baseGoalLine);
+		ctx.lineTo((width - fundWidth), height - baseGoalLine);
+		ctx.stroke();
+
+		// Preenchimento branco face-Offs
+		ctx.fillStyle = "white";
+
+		// Face-offs
+		ctx.beginPath();
+		ctx.moveTo(faceOffCenter.x - 3 * pointRadius, faceOffCenter.y - faceOffArcRadius - scale);
+		ctx.lineTo(faceOffCenter.x - 3 * pointRadius, faceOffCenter.y + faceOffArcRadius + scale);
+		ctx.moveTo(faceOffCenter.x + 3 * pointRadius, faceOffCenter.y - faceOffArcRadius - scale);
+		ctx.lineTo(faceOffCenter.x + 3 * pointRadius, faceOffCenter.y + faceOffArcRadius + scale);
+		ctx.stroke();		
+
+		ctx.beginPath();
+		ctx.arc(faceOffCenter.x, faceOffCenter.y, faceOffArcRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(faceOffCenter.x - 2 * pointRadius - halfFaceOffArcRadius, faceOffCenter.y - pointRadius);
+		ctx.lineTo(faceOffCenter.x - 2 * pointRadius , faceOffCenter.y - pointRadius);
+		ctx.lineTo(faceOffCenter.x - 2 * pointRadius , faceOffCenter.y - pointRadius - halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(faceOffCenter.x - 2 * pointRadius - halfFaceOffArcRadius, faceOffCenter.y + pointRadius);
+		ctx.lineTo(faceOffCenter.x - 2 * pointRadius , faceOffCenter.y + pointRadius);
+		ctx.lineTo(faceOffCenter.x - 2 * pointRadius , faceOffCenter.y + pointRadius + halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(faceOffCenter.x + 2 * pointRadius + halfFaceOffArcRadius, faceOffCenter.y - pointRadius);
+		ctx.lineTo(faceOffCenter.x + 2 * pointRadius , faceOffCenter.y - pointRadius);
+		ctx.lineTo(faceOffCenter.x + 2 * pointRadius , faceOffCenter.y - pointRadius - halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(faceOffCenter.x + 2 * pointRadius + halfFaceOffArcRadius, faceOffCenter.y + pointRadius);
+		ctx.lineTo(faceOffCenter.x + 2 * pointRadius , faceOffCenter.y + pointRadius);
+		ctx.lineTo(faceOffCenter.x + 2 * pointRadius , faceOffCenter.y + pointRadius + halfFaceOffArcRadius / 2);
+		ctx.stroke();		
+
+		ctx.beginPath();
+		ctx.moveTo(faceOffCenter.x - 3 * pointRadius, height - faceOffCenter.y - faceOffArcRadius - scale);
+		ctx.lineTo(faceOffCenter.x - 3 * pointRadius, height - faceOffCenter.y + faceOffArcRadius + scale);
+		ctx.moveTo(faceOffCenter.x + 3 * pointRadius, height - faceOffCenter.y - faceOffArcRadius - scale);
+		ctx.lineTo(faceOffCenter.x + 3 * pointRadius, height - faceOffCenter.y + faceOffArcRadius + scale);
+		ctx.stroke();		
+
+		ctx.beginPath();
+		ctx.arc(faceOffCenter.x, height - faceOffCenter.y, faceOffArcRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(faceOffCenter.x - 2 * pointRadius - halfFaceOffArcRadius, height - faceOffCenter.y - pointRadius);
+		ctx.lineTo(faceOffCenter.x - 2 * pointRadius , height - faceOffCenter.y - pointRadius);
+		ctx.lineTo(faceOffCenter.x - 2 * pointRadius , height - faceOffCenter.y - pointRadius - halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(faceOffCenter.x - 2 * pointRadius - halfFaceOffArcRadius, height - faceOffCenter.y + pointRadius);
+		ctx.lineTo(faceOffCenter.x - 2 * pointRadius , height - faceOffCenter.y + pointRadius);
+		ctx.lineTo(faceOffCenter.x - 2 * pointRadius , height - faceOffCenter.y + pointRadius + halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(faceOffCenter.x + 2 * pointRadius + halfFaceOffArcRadius, height - faceOffCenter.y - pointRadius);
+		ctx.lineTo(faceOffCenter.x + 2 * pointRadius , height - faceOffCenter.y - pointRadius);
+		ctx.lineTo(faceOffCenter.x + 2 * pointRadius , height - faceOffCenter.y - pointRadius - halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(faceOffCenter.x + 2 * pointRadius + halfFaceOffArcRadius, height - faceOffCenter.y + pointRadius);
+		ctx.lineTo(faceOffCenter.x + 2 * pointRadius , height - faceOffCenter.y + pointRadius);
+		ctx.lineTo(faceOffCenter.x + 2 * pointRadius , height - faceOffCenter.y + pointRadius + halfFaceOffArcRadius / 2);
+		ctx.stroke();		
+
+		ctx.beginPath();
+		ctx.moveTo(width - faceOffCenter.x - 3 * pointRadius, faceOffCenter.y - faceOffArcRadius - scale);
+		ctx.lineTo(width - faceOffCenter.x - 3 * pointRadius, faceOffCenter.y + faceOffArcRadius + scale);
+		ctx.moveTo(width - faceOffCenter.x + 3 * pointRadius, faceOffCenter.y - faceOffArcRadius - scale);
+		ctx.lineTo(width - faceOffCenter.x + 3 * pointRadius, faceOffCenter.y + faceOffArcRadius + scale);
+		ctx.stroke();		
+
+		ctx.beginPath();
+		ctx.arc(width - faceOffCenter.x, faceOffCenter.y, faceOffArcRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(width - faceOffCenter.x - 2 * pointRadius - halfFaceOffArcRadius, faceOffCenter.y - pointRadius);
+		ctx.lineTo(width - faceOffCenter.x - 2 * pointRadius , faceOffCenter.y - pointRadius);
+		ctx.lineTo(width - faceOffCenter.x - 2 * pointRadius , faceOffCenter.y - pointRadius - halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(width - faceOffCenter.x - 2 * pointRadius - halfFaceOffArcRadius, faceOffCenter.y + pointRadius);
+		ctx.lineTo(width - faceOffCenter.x - 2 * pointRadius , faceOffCenter.y + pointRadius);
+		ctx.lineTo(width - faceOffCenter.x - 2 * pointRadius , faceOffCenter.y + pointRadius + halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(width - faceOffCenter.x + 2 * pointRadius + halfFaceOffArcRadius, faceOffCenter.y - pointRadius);
+		ctx.lineTo(width - faceOffCenter.x + 2 * pointRadius , faceOffCenter.y - pointRadius);
+		ctx.lineTo(width - faceOffCenter.x + 2 * pointRadius , faceOffCenter.y - pointRadius - halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(width - faceOffCenter.x + 2 * pointRadius + halfFaceOffArcRadius, faceOffCenter.y + pointRadius);
+		ctx.lineTo(width - faceOffCenter.x + 2 * pointRadius , faceOffCenter.y + pointRadius);
+		ctx.lineTo(width - faceOffCenter.x + 2 * pointRadius , faceOffCenter.y + pointRadius + halfFaceOffArcRadius / 2);
+		ctx.stroke();		
+		
+		ctx.beginPath();
+		ctx.moveTo(width - faceOffCenter.x - 3 * pointRadius, height - faceOffCenter.y - faceOffArcRadius - scale);
+		ctx.lineTo(width - faceOffCenter.x - 3 * pointRadius, height - faceOffCenter.y + faceOffArcRadius + scale);
+		ctx.moveTo(width - faceOffCenter.x + 3 * pointRadius, height - faceOffCenter.y - faceOffArcRadius - scale);
+		ctx.lineTo(width - faceOffCenter.x + 3 * pointRadius, height - faceOffCenter.y + faceOffArcRadius + scale);
+		ctx.stroke();		
+
+		ctx.beginPath();
+		ctx.arc(width - faceOffCenter.x, height - faceOffCenter.y, faceOffArcRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(width - faceOffCenter.x - 2 * pointRadius - halfFaceOffArcRadius, height - faceOffCenter.y - pointRadius);
+		ctx.lineTo(width - faceOffCenter.x - 2 * pointRadius , height - faceOffCenter.y - pointRadius);
+		ctx.lineTo(width - faceOffCenter.x - 2 * pointRadius , height - faceOffCenter.y - pointRadius - halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(width - faceOffCenter.x - 2 * pointRadius - halfFaceOffArcRadius, height - faceOffCenter.y + pointRadius);
+		ctx.lineTo(width - faceOffCenter.x - 2 * pointRadius , height - faceOffCenter.y + pointRadius);
+		ctx.lineTo(width - faceOffCenter.x - 2 * pointRadius , height - faceOffCenter.y + pointRadius + halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(width - faceOffCenter.x + 2 * pointRadius + halfFaceOffArcRadius, height - faceOffCenter.y - pointRadius);
+		ctx.lineTo(width - faceOffCenter.x + 2 * pointRadius , height - faceOffCenter.y - pointRadius);
+		ctx.lineTo(width - faceOffCenter.x + 2 * pointRadius , height - faceOffCenter.y - pointRadius - halfFaceOffArcRadius / 2);
+
+		ctx.moveTo(width - faceOffCenter.x + 2 * pointRadius + halfFaceOffArcRadius, height - faceOffCenter.y + pointRadius);
+		ctx.lineTo(width - faceOffCenter.x + 2 * pointRadius , height - faceOffCenter.y + pointRadius);
+		ctx.lineTo(width - faceOffCenter.x + 2 * pointRadius , height - faceOffCenter.y + pointRadius + halfFaceOffArcRadius / 2);
+		ctx.stroke();		
+
+		// Preenchimento vermelho pontos
+		ctx.fillStyle = "red";
+
+		// Pontos centrais
+		ctx.beginPath();
+		ctx.arc(faceOffCenter.x, faceOffCenter.y, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(faceOffCenter.x, height - faceOffCenter.y, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(width - faceOffCenter.x, faceOffCenter.y, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(width - faceOffCenter.x, height - faceOffCenter.y, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(halfWidth, halfHeight, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(fundWidth + atkDfsWidth + scale, faceOffCenter.y, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(width - fundWidth - atkDfsWidth - scale, faceOffCenter.y, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(fundWidth + atkDfsWidth + scale, height - faceOffCenter.y, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(width - fundWidth - atkDfsWidth - scale, height - faceOffCenter.y, pointRadius, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.stroke();
+
+		// Arco central topo
+		ctx.beginPath();
+		ctx.arc(halfWidth, 0, centralTopArcRadius, 0, Math.PI);
+		ctx.stroke();
+
+		// Largura da linha ampliada 3x
+		ctx.lineWidth = 3;
+
+		// Linha central
+		ctx.beginPath();
+		ctx.moveTo(halfWidth, 0);
+		ctx.lineTo(halfWidth, halfHeight - scale);
+		ctx.moveTo(halfWidth, height);
+		ctx.lineTo(halfWidth, halfHeight + scale);
+		ctx.stroke();
+
+		// Linhas azuis	
+		ctx.strokeStyle = "#116CA5";
+
+		// Linhas centrais
+		ctx.beginPath();
+		ctx.moveTo(fundWidth + atkDfsWidth, 0);
+		ctx.lineTo(fundWidth + atkDfsWidth, height);
+		ctx.moveTo(width - fundWidth - atkDfsWidth, 0);
+		ctx.lineTo(width - fundWidth - atkDfsWidth, height);
+		ctx.stroke();
+
+		// Largura da linha reduzida 1x
+		ctx.lineWidth = 1;
+
+		// Arco central
+		ctx.beginPath();
+		ctx.arc(halfWidth, halfHeight, centralArcRadius, 0, 2 * Math.PI);
+		ctx.stroke();
+	</script>
+</body>
+</html>
